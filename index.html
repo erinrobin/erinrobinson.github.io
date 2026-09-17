@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en" data-page="home">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erin Robinson — Computer Science & Engineering, TU/e</title>
+<meta name="description" content="Portfolio of Erin Robinson: Computer Science & Engineering student at TU Eindhoven, Honors Radio Astronomy track, Hack4Her 2026 winner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── tokens ───────────────────────────────────────────────── */
+  :root{
+    --bg:#EDEFE9;
+    --bg-2:#E4E7DF;
+    --ink:#131E2E;
+    --ink-soft:#44536A;
+    --line:rgba(19,30,46,.16);
+    --line-soft:rgba(19,30,46,.08);
+    --amber:#B9741B;
+    --verd:#2C7565;
+    --panel:#F6F7F3;
+    --noise:#C9CEC4;
+    --shadow:0 18px 40px -28px rgba(19,30,46,.55);
+
+    --f-display:"Fraunces",Georgia,"Times New Roman",serif;
+    --f-body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+
+    --measure:63ch;
+    --rail:clamp(1.15rem,5vw,4.5rem);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1826; --bg-2:#141F30; --ink:#E9E6DC; --ink-soft:#9AA8BC;
+    --line:rgba(233,230,220,.20); --line-soft:rgba(233,230,220,.09);
+    --amber:#F0B455; --verd:#79C6B1; --panel:#16233A; --noise:#293852;
+    --shadow:0 20px 44px -30px rgba(0,0,0,.9);
+  }
+
+  /* ── base ─────────────────────────────────────────────────── */
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--f-body); font-weight:400; font-size:clamp(1rem,.96rem + .18vw,1.075rem);
+    line-height:1.62; letter-spacing:.005em;
+  }
+  img{max-width:100%}
+  a{color:inherit}
+  :focus-visible{outline:2.5px solid var(--amber); outline-offset:3px; border-radius:2px}
+  h1,h2,h3{font-family:var(--f-display); font-weight:400; line-height:1.06; letter-spacing:-.012em; margin:0}
+  h1{font-size:clamp(2.6rem,1.3rem + 6.2vw,5.6rem); font-variation-settings:"opsz" 120}
+  h2{font-size:clamp(1.9rem,1.2rem + 2.6vw,3.1rem); font-variation-settings:"opsz" 80}
+  h3{font-size:clamp(1.22rem,1.07rem + .6vw,1.5rem); line-height:1.2}
+  p{margin:0 0 1.05em; max-width:var(--measure)}
+  .lede{font-size:clamp(1.1rem,1rem + .5vw,1.32rem); line-height:1.55; color:var(--ink)}
+  .soft{color:var(--ink-soft)}
+  .wrap{padding-inline:var(--rail); max-width:76rem; margin-inline:auto; width:100%}
+
+  /* ── site header / dial nav ───────────────────────────────── */
+  .topbar{
+    position:sticky; top:0; z-index:40; background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(9px); border-bottom:1px solid var(--line-soft);
+  }
+  .topbar__in{display:flex; align-items:center; gap:1.4rem; min-height:4.15rem; padding-block:.55rem}
+  .mark{display:flex; align-items:baseline; gap:.55rem; text-decoration:none; margin-right:auto; white-space:nowrap}
+  .mark b{font-family:var(--f-display); font-weight:600; font-size:1.18rem; letter-spacing:-.01em}
+  .mark span{font-size:.82rem; color:var(--ink-soft)}
+  nav.dial{display:flex; align-items:center; gap:.15rem; position:relative}
+  .dial a{
+    text-decoration:none; font-size:.925rem; padding:.5rem .72rem; border-radius:999px;
+    color:var(--ink-soft); transition:color .18s ease, background .18s ease;
+  }
+  .dial a:hover{color:var(--ink); background:var(--line-soft)}
+  .dial a[aria-current="page"]{color:var(--ink); background:var(--line-soft)}
+  .dial a[aria-current="page"]::after{
+    content:""; display:block; height:2px; margin-top:.28rem; border-radius:2px;
+    background:linear-gradient(90deg,var(--verd),var(--amber));
+  }
+  .theme-btn{
+    border:1px solid var(--line); background:transparent; color:var(--ink-soft); cursor:pointer;
+    width:2.1rem; height:2.1rem; border-radius:999px; display:grid; place-items:center; flex:none; font-size:.95rem;
+  }
+  .theme-btn:hover{color:var(--ink); border-color:var(--ink-soft)}
+  .menu-btn{display:none}
+
+  /* ── page machinery ───────────────────────────────────────── */
+  .page{display:none; padding-block:clamp(2.6rem,6vw,4.6rem) clamp(3.5rem,9vw,7rem)}
+  .page.is-on{display:block}
+  .page__head{max-width:var(--measure); margin-bottom:clamp(1.8rem,4vw,2.8rem)}
+  .page__head p{margin-top:.85rem}
+  .kicker{
+    display:inline-flex; align-items:center; gap:.5rem; font-size:.85rem; color:var(--ink-soft); margin-bottom:.9rem;
+  }
+  .kicker i{width:.42rem; height:.42rem; border-radius:50%; background:var(--verd); display:block; flex:none}
+
+  /* ── hero ─────────────────────────────────────────────────── */
+  .hero{position:relative; padding-block:clamp(1rem,3vw,2rem) 0}
+  .scope{
+    position:relative; border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    background:var(--panel); box-shadow:var(--shadow);
+    padding:clamp(1.2rem,3.5vw,2.1rem) clamp(1.2rem,3.5vw,2.3rem) clamp(1.1rem,3vw,1.7rem);
+    display:grid; gap:clamp(1.1rem,3vw,1.7rem);
+  }
+  .scope__top{display:flex; flex-wrap:wrap; gap:.8rem 1.2rem; align-items:center; justify-content:space-between}
+  .scope__q{margin:0; font-size:.92rem; color:var(--ink-soft); max-width:34ch}
+  .scope__tabs{display:flex; gap:.35rem; flex-wrap:wrap}
+  .stab{
+    font:inherit; font-size:.87rem; cursor:pointer; padding:.3rem .78rem; border-radius:999px;
+    border:1px solid var(--line); background:transparent; color:var(--ink-soft);
+    transition:color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .stab:hover{color:var(--ink); border-color:var(--ink-soft)}
+  .stab[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--bg)}
+  .scope__text{
+    font-family:var(--f-display); font-weight:300; font-variation-settings:"opsz" 96;
+    font-size:clamp(1.28rem,.95rem + 1.65vw,2.25rem); line-height:1.24; letter-spacing:-.011em;
+    margin:0; max-width:30ch; min-height:3.9em; color:var(--ink);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .scope__text.is-swapping{opacity:0; transform:translateY(5px)}
+  @media (min-width:700px){ .scope__text{max-width:26ch; min-height:3.2em} }
+  .scope__dial{display:grid; gap:.5rem; border-top:1px solid var(--line-soft); padding-top:clamp(.9rem,2.5vw,1.3rem)}
+  .scope__dial-label{font-size:.83rem; color:var(--ink-soft)}
+  #dial{
+    -webkit-appearance:none; appearance:none; width:100%; background:transparent; margin:0; cursor:grab;
+    accent-color:var(--amber);
+  }
+  #dial:active{cursor:grabbing}
+  #dial::-webkit-slider-runnable-track{height:3px; border-radius:99px; background:linear-gradient(90deg,var(--verd),var(--amber))}
+  #dial::-moz-range-track{height:3px; border-radius:99px; background:linear-gradient(90deg,var(--verd),var(--amber))}
+  #dial::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:20px; height:20px; margin-top:-8.5px; border-radius:50%;
+    background:var(--bg); border:2.5px solid var(--amber); box-shadow:0 2px 8px -2px rgba(0,0,0,.35);
+  }
+  #dial::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--bg); border:2.5px solid var(--amber);
+  }
+  .scope__marks{display:flex; justify-content:space-between; gap:.5rem; font-size:.82rem; color:var(--ink-soft)}
+  .scope__marks span{flex:1; transition:color .18s ease}
+  .scope__marks span:nth-child(2){text-align:center}
+  .scope__marks span:last-child{text-align:right}
+  .scope__marks span.is-on{color:var(--amber)}
+  .hero h1{margin:.1em 0 .25em}
+  .hero h1 .ch{display:inline-block; opacity:0; transform:translateY(.16em); animation:chIn .7s ease-out forwards}
+  @keyframes chIn{to{opacity:1; transform:translateY(0)}}
+  .hero__sub{display:flex; flex-wrap:wrap; gap:.5rem .9rem; align-items:center; margin-bottom:1.5rem}
+  .tag{
+    font-size:.86rem; border:1px solid var(--line); border-radius:999px; padding:.28rem .72rem; color:var(--ink-soft);
+  }
+  .tag--live{border-color:color-mix(in srgb,var(--verd) 55%,transparent); color:var(--verd)}
+  .hero__grid{display:grid; gap:clamp(1.6rem,4vw,3rem); grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); align-items:end}
+  @media (max-width:860px){ .hero__grid{grid-template-columns:1fr} }
+  .hero__aside{border-left:2px solid var(--line); padding-left:1.1rem}
+  .hero__aside p{font-size:.97rem; margin-bottom:.7rem}
+
+  .cta-row{display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.4rem}
+  .btn{
+    font:inherit; font-size:.95rem; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem;
+    padding:.66rem 1.15rem; border-radius:999px; border:1px solid var(--ink); background:var(--ink); color:var(--bg);
+    transition:transform .14s ease, opacity .14s ease;
+  }
+  .btn:hover{transform:translateY(-1px); opacity:.92}
+  .btn--ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+  .btn--ghost:hover{border-color:var(--ink)}
+
+  /* ── generic blocks ───────────────────────────────────────── */
+  .rule{border:0; border-top:1px solid var(--line-soft); margin:clamp(2.2rem,5vw,3.4rem) 0}
+
+  .constellation{margin-top:clamp(1.7rem,4vw,2.5rem)}
+  .constellation__lede{margin:0 0 .8rem; font-size:.92rem; color:var(--ink-soft)}
+  .constellation__row{display:flex; flex-wrap:wrap; gap:.55rem}
+  .node{
+    font:inherit; font-size:.88rem; cursor:pointer;
+    padding:.48rem .95rem; border-radius:999px; border:1px solid var(--line); background:transparent;
+    color:var(--ink-soft); transition:color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .node:hover{border-color:var(--verd); color:var(--ink)}
+  .node[aria-pressed="true"]{border-color:var(--amber); color:var(--ink); background:var(--panel)}
+  .constellation__cap{margin:.85rem 0 0; font-size:.97rem; min-height:1.5em; color:var(--ink)}
+  .cols{display:grid; gap:clamp(1.4rem,3.5vw,2.6rem); grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+  .card{
+    background:var(--panel); border:1px solid var(--line-soft); border-radius:12px; padding:1.25rem 1.3rem;
+  }
+  .card h3{margin-bottom:.4rem}
+  .card p{font-size:.97rem; margin-bottom:0; color:var(--ink-soft)}
+
+  /* ── timeline ─────────────────────────────────────────────── */
+  .track{position:relative; margin-left:.3rem; padding-left:2.35rem}
+  .track::before{
+    content:""; position:absolute; left:9px; top:.3rem; bottom:.3rem; width:2px; border-radius:2px;
+    background:linear-gradient(180deg, var(--verd), var(--amber) 58%, var(--line));
+  }
+  .stop{position:relative; padding-bottom:2.35rem}
+  .stop:last-child{padding-bottom:0}
+  .stop::before{
+    content:""; position:absolute; left:calc(-2.35rem + 3px); top:.28rem; width:13px; height:13px; border-radius:50%;
+    background:var(--bg); border:2.5px solid var(--verd); box-shadow:0 0 0 4px var(--bg);
+  }
+  .stop--now::before{
+    background:var(--amber); border-color:var(--amber);
+    box-shadow:0 0 0 4px var(--bg), 0 0 0 7px color-mix(in srgb, var(--amber) 20%, transparent);
+  }
+  .stop time{
+    font-size:.85rem; color:var(--ink-soft); display:flex; align-items:center; gap:.55rem; margin-bottom:.4rem;
+    font-variant-numeric:tabular-nums;
+  }
+  .now-badge{
+    font-size:.7rem; line-height:1; padding:.28rem .55rem; border-radius:999px; color:var(--amber);
+    border:1px solid color-mix(in srgb, var(--amber) 50%, transparent);
+  }
+  .stop h3{margin-bottom:.35rem}
+  .stop p{font-size:.98rem; margin-bottom:0}
+
+  /* ── work / project accordion ─────────────────────────────── */
+  .filterbar{display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; margin-bottom:1.6rem}
+  .filterbar p{margin:0 .4rem 0 0; font-size:.9rem; color:var(--ink-soft)}
+  .chip{
+    font:inherit; font-size:.87rem; cursor:pointer; padding:.32rem .8rem; border-radius:999px;
+    border:1px solid var(--line); background:transparent; color:var(--ink-soft);
+  }
+  .chip:hover{border-color:var(--ink-soft); color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--bg)}
+
+  .proj{border-top:1px solid var(--line); }
+  .proj:last-of-type{border-bottom:1px solid var(--line)}
+  .proj[hidden]{display:none}
+  .proj__btn{
+    width:100%; display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start; text-align:left;
+    background:transparent; border:0; color:inherit; font:inherit; cursor:pointer; padding:1.35rem .2rem;
+  }
+  .proj__btn:hover .proj__title{color:var(--amber)}
+  .proj__title{font-family:var(--f-display); font-size:clamp(1.3rem,1.1rem + 1vw,1.85rem); line-height:1.15; transition:color .16s ease}
+  .proj__meta{font-size:.9rem; color:var(--ink-soft); margin-top:.35rem; display:flex; flex-wrap:wrap; gap:.35rem .8rem}
+  .proj__sign{
+    flex:none; width:2rem; height:2rem; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center;
+    transition:transform .22s ease, background .22s ease, border-color .22s ease; font-size:1.1rem; line-height:1; color:var(--ink-soft);
+  }
+  .proj__btn[aria-expanded="true"] .proj__sign{transform:rotate(45deg); background:var(--amber); border-color:var(--amber); color:var(--bg)}
+  .proj__body{overflow:hidden; height:0; transition:height .3s cubic-bezier(.4,0,.2,1)}
+  .proj__inner{padding:0 .2rem 1.6rem; display:grid; gap:1.3rem; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+  @media (max-width:760px){ .proj__inner{grid-template-columns:1fr} }
+  .proj__inner h4{margin:0 0 .35rem; font-size:.92rem; font-weight:600}
+  .proj__inner ul{margin:0; padding-left:1.05rem}
+  .proj__inner li{margin-bottom:.45rem}
+  .specs{border-left:2px solid var(--line); padding-left:1rem; font-size:.94rem}
+  .specs dt{color:var(--ink-soft); font-size:.85rem}
+  .specs dd{margin:.1rem 0 .8rem}
+  .proj__inner code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.88em;
+    background:var(--panel); border:1px solid var(--line-soft); border-radius:4px; padding:.05em .35em;
+  }
+
+  /* ── toolkit ──────────────────────────────────────────────── */
+  .grid-skills{display:grid; gap:1.7rem; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+  .skill-list{list-style:none; margin:.6rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem}
+  .skill{
+    font:inherit; font-size:.92rem; cursor:pointer; border-radius:8px; padding:.4rem .78rem;
+    border:1px solid var(--line); background:transparent; color:var(--ink); transition:background .15s ease,border-color .15s ease;
+  }
+  .skill:hover{border-color:var(--verd)}
+  .skill[aria-pressed="true"]{background:color-mix(in srgb,var(--verd) 18%,transparent); border-color:var(--verd)}
+  .meter{display:grid; gap:.75rem; margin-top:.6rem}
+  .meter__row{display:grid; grid-template-columns:7.5rem 1fr; gap:.8rem; align-items:center; font-size:.94rem}
+  .bar{height:7px; border-radius:99px; background:var(--line-soft); overflow:hidden}
+  .bar i{display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--verd),var(--amber)); width:var(--w,50%)}
+  .readout{
+    margin-top:1.5rem; background:var(--panel); border:1px solid var(--line-soft); border-radius:12px; padding:1.15rem 1.25rem;
+    min-height:7.5rem;
+  }
+  .readout h3{font-size:1.1rem; margin-bottom:.5rem}
+  .readout p{font-size:.97rem; margin-bottom:.6rem}
+  .readout ul{margin:0; padding-left:1.1rem; font-size:.96rem; color:var(--ink-soft)}
+  .readout li{margin-bottom:.35rem}
+
+  /* ── contact ──────────────────────────────────────────────── */
+  .contact-grid{display:grid; gap:clamp(1.5rem,4vw,3rem); grid-template-columns:minmax(0,1fr) minmax(0,.85fr)}
+  @media (max-width:820px){ .contact-grid{grid-template-columns:1fr} }
+  .lines{list-style:none; margin:0; padding:0}
+  .lines li{border-bottom:1px solid var(--line-soft); padding:.9rem 0; display:flex; gap:1rem; align-items:baseline; flex-wrap:wrap}
+  .lines span{color:var(--ink-soft); font-size:.88rem; min-width:5.5rem}
+  .lines a,.lines b{font-weight:400; text-decoration:none; border-bottom:1px solid var(--line); word-break:break-word}
+  .lines a:hover{border-color:var(--amber); color:var(--amber)}
+  .copy-btn{font:inherit; font-size:.82rem; cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--ink-soft); border-radius:6px; padding:.15rem .5rem}
+  .copy-btn:hover{color:var(--ink); border-color:var(--ink-soft)}
+  .note{background:var(--panel); border:1px solid var(--line-soft); border-radius:12px; padding:1.2rem 1.3rem}
+  .note p:last-child{margin-bottom:0}
+
+  /* ── footer ───────────────────────────────────────────────── */
+  footer{border-top:1px solid var(--line-soft); padding-block:2.2rem 2.4rem; margin-top:.6rem; font-size:.87rem; color:var(--ink-soft)}
+  footer .wrap{display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; justify-content:space-between}
+
+  @media (max-width:640px){
+    .topbar__in{flex-wrap:wrap; gap:.6rem}
+    nav.dial{order:3; width:100%; overflow-x:auto; padding-bottom:.35rem; gap:.1rem}
+    .dial a{padding:.45rem .6rem; font-size:.9rem}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important; transition-duration:.001ms !important}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar__in">
+    <a class="mark" href="#home"><b>Erin Robinson</b><span>Eindhoven</span></a>
+    <nav class="dial" aria-label="Sections">
+      <a href="#home">Home</a>
+      <a href="#background">Background</a>
+      <a href="#work">Work</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark theme" title="Switch theme">◐</button>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+<!-- ══ HOME ══════════════════════════════════════════════════ -->
+<section class="page is-on hero" id="page-home" aria-labelledby="h-home">
+  <div class="hero__grid">
+    <div>
+      <p class="kicker"><i></i>Second-year Computer Science &amp; Engineering, TU Eindhoven</p>
+      <h1 id="h-home"><span id="nameLine">Erin Robinson</span></h1>
+      <div class="hero__sub">
+        <span class="tag tag--live">Open to internships &amp; part-time tech jobs</span>
+        <span class="tag">Honors Radio Astronomy track</span>
+        <span class="tag">Hack4Her 2026 winner</span>
+      </div>
+      <p class="lede">Passionate about building complex software and researching innovative solutions. I specialize in implementing complex algorithms, designing scalable systems, and communicating technical concepts effectively. I enjoy participating in hackathons and challenges where I can push my limits and improve user experiences.</p>
+      <div class="cta-row">
+        <a class="btn" href="#work">See the work</a>
+        <a class="btn btn--ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <aside class="hero__aside">
+      <p><strong>Right now:</strong> second year at TU/e, starting the Honors Radio Astronomy track, and keeping the shop floor running at Albert Heijn on the side.</p>
+      <p><strong>Best at:</strong> Thinking out of the box and finding creative solutions to complex problems. Following the guidelines of good software engineering practices and maintaining a user-centric approach. Being able to undertake diverse projects and learn new technologies quickly.</p>
+      <p><strong>Working in:</strong> Python, Java, SQL, Assembly, ROS2, HTML, CSS.</p>
+    </aside>
+  </div>
+
+  <div class="constellation" aria-label="A few more things about me">
+    <p class="constellation__lede">A few more things, if you're curious.</p>
+    <div class="constellation__row">
+      <button type="button" class="node" data-key="guitar" aria-pressed="false">Guitar</button>
+      <button type="button" class="node" data-key="abacus" aria-pressed="false">Abacus</button>
+      <button type="button" class="node" data-key="sparrows" aria-pressed="false">Sparrows</button>
+    </div>
+    <p class="constellation__cap" id="constCap" aria-live="polite">Tap one to find out.</p>
+  </div>
+
+  <hr class="rule">
+
+  <div class="cols" style="margin-bottom:clamp(1rem,3vw,2rem)">
+    <div class="card">
+      <h3>First place, first pitch</h3>
+      <p>Two people, one deadline, one prototype. My teammate and I pitched our Booking.com challenge solution together to a non-technical panel at Hack4Her 2026 and took the category.</p>
+    </div>
+    <div class="card">
+      <h3>Six-person systems</h3>
+      <p>Two multi-person builds — a pest-monitoring platform and a Java desktop app — where my job included the part nobody volunteers for: writing the spec everyone builds from.</p>
+    </div>
+    <div class="card">
+      <h3>People, not just pipelines</h3>
+      <p>Peak-hour customer service teaches a thing that lectures don't: staying clear and warm with a stranger while the queue grows behind them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BACKGROUND ════════════════════════════════════════════ -->
+<section class="page" id="page-background" aria-labelledby="h-bg">
+  <div class="page__head">
+    <p class="kicker"><i></i>Background</p>
+    <h2 id="h-bg">Curious by default, structured by training</h2>
+    <p class="lede">Computer Science gave me the tools, training gave me the structure. Over nights i like to build and tinker with things. That has lead me to build and figuring many things that lecture rooms couldn't teach.</p>
+  </div>
+
+  <div class="hero__grid">
+    <div>
+      <p>Give me a weekend and I'll usually find something to build — a Pac-Man clone from scratch, a script pulling apart pulsar signal data just to see what's in it. I like the version of computer science where you get to make something concrete, then poke at it until it breaks, then work out why.</p>
+      <p>I'm in my second year at TU Eindhoven, and the pattern in everything I've done so far is the same. There's a technical core — a expiry-matching algorithm, a fault-injection dashboard, a hackathon prototype — and then making it legible. </p>
+      <p>In September 2026 I joined the Honors Radio Astronomy track — a chance to work with students from completely different disciplines on fast, ambitious projects, where half the challenge is translating between fields.</p>
+      </div>
+    <div>
+      <div class="note">
+        <h3 style="margin-bottom:.6rem">Languages</h3>
+        <div class="meter">
+          <div class="meter__row"><span>English — C2</span><span class="bar"><i style="--w:97%"></i></span></div>
+          <div class="meter__row"><span>Dutch — A2</span><span class="bar"><i style="--w:34%"></i></span></div>
+        </div>
+        <p class="soft" style="font-size:.9rem; margin-top:.9rem; margin-bottom:0">Dutch is a work in progress, and the Albert Heijn shop floor is excellent practice.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h3 style="margin-bottom:1.4rem">The route so far</h3>
+  <div class="track">
+    <article class="stop stop--now">
+      <time>Sept 2026 – 2028 <span class="now-badge">Now</span></time>
+      <h3>Honors Radio Astronomy Track — TU Eindhoven</h3>
+      <p>Fast-paced, innovative projects with a deliberately mixed group of students from different disciplines. The kind of environment where the interesting problems live at the seams between specialisms.</p>
+    </article>
+    <article class="stop stop--now">
+      <time>Aug 2026 – present <span class="now-badge">Now</span></time>
+      <h3>Operations Assistant — Albert Heijn</h3>
+      <p>Front-line service during peak hours, plus day-to-day department workflow and inventory replenishment. Recurring, time-sensitive tasks, a rotating cast of colleagues, and a lot of face-to-face problem solving with strangers.</p>
+    </article>
+    <article class="stop">
+      <time>2026</time>
+      <h3>Hack4Her — 1st place, Booking.com challenge</h3>
+      <p>Prototyped and pitched with a two-person team under a hard deadline.</p>
+    </article>
+    <article class="stop stop--now">
+      <time>Sept 2025 – Sept 2028 <span class="now-badge">Now</span></time>
+      <h3>BSc Computer Science and Engineering — TU Eindhoven</h3>
+      <p>Currently in the second year. Software design, algorithms, systems, and a steady diet of group projects with real deliverables.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ══ WORK ══════════════════════════════════════════════════ -->
+<section class="page" id="page-work" aria-labelledby="h-work">
+  <div class="page__head">
+    <p class="kicker"><i></i>Work</p>
+    <h2 id="h-work">Three builds and a shop floor</h2>
+    <p class="lede">Open any entry for what it was, what I did, and what I'd want you to ask me about. Filter by what you're looking for.</p>
+  </div>
+
+  <div class="filterbar" role="group" aria-label="Filter work">
+    <p>Show:</p>
+    <button class="chip" type="button" data-filter="all" aria-pressed="true">Everything</button>
+    <button class="chip" type="button" data-filter="team" aria-pressed="false">Team projects</button>
+    <button class="chip" type="button" data-filter="hackathon" aria-pressed="false">Hackathons</button>
+    <button class="chip" type="button" data-filter="job" aria-pressed="false">Employment</button>
+    <button class="chip" type="button" data-filter="solo" aria-pressed="false">Solo builds</button>
+  </div>
+
+  <div id="projList">
+    <!-- Hack4Her -->
+    <article class="proj" data-tags="hackathon team" data-skills="communication,creative,collaboration,problem,python,html,css">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-hack">
+        <span>
+          <span class="proj__title">Hack4Her 2026 — Booking.com challenge</span>
+          <span class="proj__meta"><span>1st place</span><span>Two-person team</span><span>Prototype &amp; Hackathon</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-hack">
+        <div class="proj__inner">
+          <div>
+            <h4>What happened</h4>
+            <ul>
+              <li>Rapidly prototyped a solution to Booking.com's challenge with a two-person team, against a tight competition deadline.</li>
+              <li>Delivered the pitch together with my teammate: taking a technical concept and making it clear, persuasive and defensible for a judging panel that wasn't technical.</li>
+              <li>Won the category — which mostly proved that the idea survived contact with an audience.</li>
+            </ul>
+            <h4 style="margin-top:1rem">Why it matters to me</h4>
+            <p style="margin-bottom:0" class="soft">Taking something from "concept" to "explainable and defensible in front of a room" is the exact skill I'd use coaching a student on how to present themselves to an employer. Same job, different subject.</p>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>Builder and co-presenter</dd>
+            <dt>Team</dt><dd>2 people</dd>
+            <dt>Constraint</dt><dd>Hackathon deadline, non-technical judges</dd>
+            <dt>Outcome</dt><dd>First place, Booking.com challenge</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- YieldWise -->
+    <article class="proj" data-tags="team" data-skills="collaboration,problem,leadership,python,ros2,sql,html,css">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-yield">
+        <span>
+          <span class="proj__title">YieldWise — autonomous pest-monitoring system</span>
+          <span class="proj__meta"><span>CBL course, Q4 Year 1</span><span>Team of 6</span><span>ROS</span><span>SDG 2.3</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-yield">
+        <div class="proj__inner">
+          <div>
+            <h4>What it is</h4>
+            <p>Built in the CBL course in Q4 of my first year, YieldWise is an autonomous system for monitoring pests in the field, built with a team of six on ROS. The brief was framed around UN SDG 2.3 — raising the productivity and incomes of small-scale food producers — so the system was designed to catch pest damage early enough for a farmer to actually act on it. My contribution centred on the layer where people meet the system, and on proving it behaves when things break.</p>
+            <h4>What I did</h4>
+            <ul>
+              <li>Helped develop a live web dashboard for monitoring and fault injection, so the system's state is readable rather than inferred.</li>
+              <li>Validated the system through structured fault-tolerance testing: deliberately breaking things and documenting exactly how it degraded.</li>
+              <li>Organised and communicated a multi-part technical effort across six people, keeping the moving parts explainable.</li>
+            </ul>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>Dashboard &amp; validation</dd>
+            <dt>Team</dt><dd>6 people</dd>
+            <dt>Course</dt><dd>CBL, Q4 Year 1 — TU/e</dd>
+            <dt>Stack</dt><dd>ROS</dd><dd>HTML</dd><dd>Web dashboard, fault-tolerance testing</dd>
+            <dt>SDG focus</dt><dd>2.3 — small-scale food producer productivity</dd>
+            <dt>Ask me about</dt><dd>What broke first, and what that told us</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- Stocked -->
+    <article class="proj" data-tags="team" data-skills="problem,communication,collaboration,java,sql">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-stocked">
+        <span>
+          <span class="proj__title">Stocked — Java desktop application</span>
+          <span class="proj__meta"><span>Team of 6</span><span>Food storage and tracking</span><span>Java</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-stocked">
+        <div class="proj__inner">
+          <div>
+            <h4>The problem</h4>
+            <p>Households throw out food that was perfectly good last Tuesday. Stocked tracks your inventory and alerts you when items are about to expire.</p>
+            <h4>What I did</h4>
+            <ul>
+              <li>Designed the expiration tracking system with the team, using ingredient expiration data to drive suggestions.</li>
+              <li>Authored the formal use-case specifications, turning defined functional and quality requirements into something six people could build from without guessing.</li>
+              <li>Carried those requirements through to a working, user-facing application.</li>
+            </ul>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>Algorithm design &amp; specification</dd>
+            <dt>Team</dt><dd>6 people</dd>
+            <dt>Course</dt><dd>Software Design, Q4 Year 1 — TU/e</dd>
+            <dt>Stack</dt><dd>Java desktop application</dd>
+            <dt>Ask me about</dt><dd>Turning a vague requirement into a testable one</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- Albert Heijn -->
+    <article class="proj" data-tags="job" data-skills="communication,adaptability,collaboration,leadership">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-ah">
+        <span>
+          <span class="proj__title">Operations Assistant — Albert Heijn</span>
+          <span class="proj__meta"><span>Aug 2026 – present</span><span>Eindhoven</span><span>Customer-facing</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-ah">
+        <div class="proj__inner">
+          <div>
+            <h4>Day to day</h4>
+            <ul>
+              <li>Front-line customer service through high-traffic peak hours — staying clear and approachable with a very wide range of people, under time pressure.</li>
+              <li>Coordinating department workflow and inventory replenishment: recurring, time-sensitive tasks that only stay invisible if someone organises them properly.</li>
+              <li>Working across shifts with different colleagues and working styles to hold one consistent standard of service.</li>
+            </ul>
+            <h4 style="margin-top:1rem">What it's actually taught me</h4>
+            <p style="margin-bottom:0" class="soft">Comfort with strangers. It sounds small. It's the reason presenting to a panel of judges didn't frighten me.</p>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>Operations Assistant</dd>
+            <dt>Since</dt><dd>August 2026</dd>
+            <dt>Alongside</dt><dd>Full-time study at TU/e</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- Pulsar Signal Analysis -->
+    <article class="proj" data-tags="solo" data-skills="python,problem-solving,data-analysis,initial-research">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-pulsar">
+        <span>
+          <span class="proj__title">Pulsar Signal Analysis</span>
+          <span class="proj__meta"><span>Independent project</span><span>Python</span><span>Data analysis</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-pulsar">
+        <div class="proj__inner">
+          <div>
+            <h4>What I built</h4>
+            <ul>
+              <li>Developed a Python script to analyze pulsar signal data and identify potential candidates for further study.</li>
+              <li>Implemented data cleaning and preprocessing techniques to ensure accurate analysis.</li>
+              <li>Got to learn and understand about complex mathematical transforms like fast Fourier transforms.</li>
+            </ul>
+            <h4 style="margin-top:1rem">Why it was meaningful</h4>
+            <p style="margin-bottom:0" class="soft">This project allowed me to apply my programming skills to a real-world problem in astronomy, contributing to the field of pulsar research.</p>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>builder and explorer</dd>
+            <dt>Stack</dt><dd>Python, data analysis</dd>
+            <dt>When</dt><dd>Independent project</dd>
+            <dt>Outcome</dt><dd>Accepted into radio astronomy honors program. had fun!</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- Pac-Man -->
+    <article class="proj" data-tags="team" data-skills="problem,creative,java">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-pacman">
+        <span>
+          <span class="proj__title">Pac-Man — Java game</span>
+          <span class="proj__meta"><span>Q1, Year 1 — TU/e</span><span>Pair project</span><span>Java</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-pacman">
+        <div class="proj__inner">
+          <div>
+            <h4>What it is</h4>
+            <p>A Pac-Man clone built from scratch in Java with a teammate, for a first-quarter assignment. <code>GameWindow.java</code> opens the window and drives the game loop; it calls into <code>Pacman.java</code> for the core logic. Both files and all image assets need to sit in the same folder to run.</p>
+            <h4>What I built</h4>
+            <ul>
+              <li>Pac-Man and ghost movement, with collision handling around the maze walls.</li>
+              <li>Score tracking from eating dots and cherries — cherries only spawn in Maze 3.</li>
+              <li>Teleport portals, a lives system, and multiple selectable levels and mazes.</li>
+              <li>Full game flow: start screen → level select → maze select → play. Losing resets to the same choices; winning returns to level select.</li>
+            </ul>
+            <p style="margin-top:.9rem" class="soft">Maze 4 is a stripped-down test maze, built to check the winning case quickly, so a few features are deliberately left out of it.</p>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>Co-developer</dd>
+            <dt>Team</dt><dd>2 people</dd>
+            <dt>Stack</dt><dd>Java</dd>
+            <dt>Course</dt><dd>Programming, Q1 Year 1 — TU/e</dd>
+            <dt>Ask me about</dt><dd>Why Maze 4 exists</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- Doctor's Appointment Management System -->
+    <article class="proj" data-tags="team" data-skills="problem,communication,python,sql">
+      <h3><button class="proj__btn" type="button" aria-expanded="false" aria-controls="b-doctor">
+        <span>
+          <span class="proj__title">Doctor's Appointment Management System</span>
+          <span class="proj__meta"><span>High school project</span><span>Team of 3</span><span>Python</span><span>SQL</span></span>
+        </span>
+        <span class="proj__sign" aria-hidden="true">+</span>
+      </button></h3>
+      <div class="proj__body" id="b-doctor">
+        <div class="proj__inner">
+          <div>
+            <h4>The problem</h4>
+            <p>A lot of what makes healthcare hard to access isn't the medicine — it's the admin. Built with two other students in high school, this is a Python program backed by a SQL database that keeps doctors, patients and admin staff organised in one place, so booking, cancelling and looking up a patient's details doesn't depend on someone finding the right folder.</p>
+            <h4>What I did</h4>
+            <ul>
+              <li>Designed the SQL schema for doctors, patients, admins and appointments, and wrote the Python logic that reads and writes to it.</li>
+              <li>Built the booking and cancelling flow, so an appointment could be created against a specific doctor's schedule and pulled back up on request.</li>
+              <li>Structured patient records so details could be found and updated quickly by admin staff.</li>
+            </ul>
+          </div>
+          <dl class="specs">
+            <dt>Role</dt><dd>Schema &amp; backend logic</dd>
+            <dt>Team</dt><dd>3 people</dd>
+            <dt>Stack</dt><dd>Python, SQL</dd>
+            <dt>When</dt><dd>High school</dd>
+            <dt>Ask me about</dt><dd>How the schema is structured</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <p class="soft" id="emptyNote" hidden style="margin-top:1.5rem">Nothing under that filter. Try <button class="chip" type="button" data-filter="all" aria-pressed="false">Everything</button>.</p>
+
+  <hr class="rule">
+
+  <div class="scope">
+    <div class="scope__top">
+      <p class="scope__q">The same project, explained to three different rooms.</p>
+      <div class="scope__tabs" role="group" aria-label="Choose a project">
+        <button type="button" class="stab" data-subject="stocked" aria-pressed="true">Stocked</button>
+        <button type="button" class="stab" data-subject="yieldwise" aria-pressed="false">YieldWise</button>
+        <button type="button" class="stab" data-subject="hack" aria-pressed="false">Hack4Her</button>
+      </div>
+    </div>
+
+    <p class="scope__text" id="transText" aria-live="polite">A constraint-satisfaction matcher that ranks recipes against a household's current ingredient set, weighted by time-to-expiry.</p>
+
+    <div class="scope__dial">
+      <label class="scope__dial-label" for="dial">Who I'm talking to</label>
+      <input type="range" id="dial" min="0" max="2" step="1" value="0"
+             aria-label="Who I'm talking to" aria-valuetext="A fellow engineer">
+      <div class="scope__marks" aria-hidden="true">
+        <span data-level="0">A fellow engineer</span>
+        <span data-level="1">A recruiter</span>
+        <span data-level="2">My grandmother</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOOLKIT ═══════════════════════════════════════════════ -->
+<section class="page" id="page-toolkit" aria-labelledby="h-tool">
+  <div class="page__head">
+    <p class="kicker"><i></i>Toolkit</p>
+    <h2 id="h-tool">Pick anything and I'll show you where I used it</h2>
+    <p class="lede">A skills list only means something with receipts attached. Select one below.</p>
+  </div>
+
+  <div class="grid-skills">
+    <div>
+      <h3>How I work with people</h3>
+      <ul class="skill-list">
+        <li><button class="skill" type="button" data-skill="communication" aria-pressed="false">Communication</button></li>
+        <li><button class="skill" type="button" data-skill="leadership" aria-pressed="false">Leadership</button></li>
+        <li><button class="skill" type="button" data-skill="collaboration" aria-pressed="false">Collaboration</button></li>
+        <li><button class="skill" type="button" data-skill="adaptability" aria-pressed="false">Adaptability</button></li>
+        <li><button class="skill" type="button" data-skill="problem" aria-pressed="false">Problem solving</button></li>
+        <li><button class="skill" type="button" data-skill="creative" aria-pressed="false">Creative thinking</button></li>
+      </ul>
+
+      <h3 style="margin-top:1.6rem">What I build with</h3>
+      <ul class="skill-list">
+        <li><button class="skill" type="button" data-skill="python" aria-pressed="false">Python</button></li>
+        <li><button class="skill" type="button" data-skill="java" aria-pressed="false">Java</button></li>
+        <li><button class="skill" type="button" data-skill="sql" aria-pressed="false">SQL</button></li>
+        <li><button class="skill" type="button" data-skill="cpp" aria-pressed="false">C++</button></li>
+        <li><button class="skill" type="button" data-skill="assembly" aria-pressed="false">Assembly</button></li>
+        <li><button class="skill" type="button" data-skill="ros2" aria-pressed="false">ROS2</button></li>
+        <li><button class="skill" type="button" data-skill="html" aria-pressed="false">HTML</button></li>
+        <li><button class="skill" type="button" data-skill="css" aria-pressed="false">CSS</button></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="readout" id="readout" aria-live="polite">
+        <h3>Nothing selected yet</h3>
+        <p class="soft">Choose a skill on the left. You'll get what it means in practice for me, and which projects it shows up in.</p>
+      </div>
+      <p class="soft" style="font-size:.9rem; margin-top:1rem">Proficient in Python, Java and SQL. Working knowledge of C++, Assembly and ROS2 through coursework and project work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ═══════════════════════════════════════════════ -->
+<section class="page" id="page-contact" aria-labelledby="h-contact">
+  <div class="page__head">
+    <p class="kicker"><i></i>Contact</p>
+    <h2 id="h-contact">Say hello</h2>
+    <p class="lede">I'm in Eindhoven, studying full time, and interested in internships, student-facing coaching work, and projects where someone has to explain the hard part.</p>
+  </div>
+
+  <div class="contact-grid">
+    <ul class="lines">
+      <li><span>Email</span>
+        <a href="mailto:e.robinson@student.tue.nl">e.robinson@student.tue.nl</a>
+        <button class="copy-btn" type="button" id="copyMail">Copy</button>
+      </li>
+      <li><span>Phone</span><a href="tel:+31685467291">+31 6 85467291</a></li>
+      <li><span>LinkedIn</span><a href="https://www.linkedin.com/" id="liLink" rel="noopener">linkedin.com — add your profile URL</a></li>
+      <li><span>Based in</span><b>Eindhoven, Netherlands</b></li>
+      <li><span>Studying</span><b>BSc Computer Science &amp; Engineering, TU/e</b></li>
+    </ul>
+
+    <div class="note">
+      <h3 style="margin-bottom:.6rem">Good reasons to write</h3>
+      <p>You need someone who can write the spec <em>and</em> stand up and defend it.</p>
+      <p>You're looking for a student coach, teaching assistant, or someone to help first-years find their footing.</p>
+      <p>You have a project at the seam between disciplines and need a translator who can also code.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Erin Robinson — Eindhoven, Netherlands</span>
+    <span>Built by hand. Last updated September 2026.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ── theme toggle ──────────────────────────────────────── */
+  var themeBtn = document.getElementById("themeBtn");
+  function currentTheme(){
+    var set = document.documentElement.getAttribute("data-theme");
+    if(set) return set;
+    return "light";
+  }
+  function syncBtn(){
+    var t = currentTheme();
+    themeBtn.setAttribute("aria-label", t === "dark" ? "Switch to light theme" : "Switch to dark theme");
+    themeBtn.textContent = t === "dark" ? "☀" : "☾";
+  }
+  try{
+    var saved = localStorage.getItem("er-theme");
+    if(saved === "dark" || saved === "light") document.documentElement.setAttribute("data-theme", saved);
+  }catch(e){}
+  syncBtn();
+  themeBtn.addEventListener("click", function(){
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try{ localStorage.setItem("er-theme", next); }catch(e){}
+    syncBtn();
+  });
+
+  /* ── constellation of extras ───────────────────────────── */
+  (function(){
+    var facts = {
+      guitar:"Trinity College London, Grade 1 — picked up on a whim in my final year of school.",
+      abacus:"Level 7 in the SMA Abacus system, and 2nd place at a state competition.",
+      sparrows:"Ran a survey on the declining sparrow population near home, just to find out why they'd gone quiet."
+    };
+    var nodes = Array.prototype.slice.call(document.querySelectorAll(".node"));
+    var cap = document.getElementById("constCap");
+    nodes.forEach(function(n){
+      n.addEventListener("click", function(){
+        var key = n.dataset.key;
+        var already = n.getAttribute("aria-pressed") === "true";
+        nodes.forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+        if(already){ cap.textContent = "Tap one to find out."; return; }
+        n.setAttribute("aria-pressed","true");
+        cap.textContent = facts[key];
+      });
+    });
+  })();
+
+  /* ── router ────────────────────────────────────────────── */
+  var pages = ["home","background","work","toolkit","contact"];
+  var links = Array.prototype.slice.call(document.querySelectorAll(".dial a"));
+  var titles = {
+    home:"Erin Robinson — Computer Science & Engineering, TU/e",
+    background:"Background — Erin Robinson",
+    work:"Work — Erin Robinson",
+    toolkit:"Toolkit — Erin Robinson",
+    contact:"Contact — Erin Robinson"
+  };
+  function show(id, scroll){
+    if(pages.indexOf(id) === -1) id = "home";
+    pages.forEach(function(p){
+      document.getElementById("page-" + p).classList.toggle("is-on", p === id);
+    });
+    links.forEach(function(a){
+      if(a.getAttribute("href") === "#" + id) a.setAttribute("aria-current","page");
+      else a.removeAttribute("aria-current");
+    });
+    document.title = titles[id];
+    document.documentElement.setAttribute("data-page", id);
+    if(scroll) window.scrollTo({top:0, behavior: reduce ? "auto" : "smooth"});
+  }
+  window.addEventListener("hashchange", function(){
+    show(location.hash.replace("#",""), true);
+  });
+  show(location.hash.replace("#",""), false);
+
+  /* ── translation dial ─────────────────────────────────── */
+  var lines = {
+    stocked:[
+      "A constraint-satisfaction matcher that ranks recipes against a household's current ingredient set, weighted by time-to-expiry.",
+      "A Java desktop app that suggests recipes from what you already have, putting whatever expires soonest first. I designed the matching logic and wrote the use-case specs for a team of six.",
+      "It looks at your fridge, notices the spinach is on its last day, and tells you what to cook tonight."
+    ],
+    yieldwise:[
+      "A live telemetry and fault-injection dashboard, built for the CBL course on ROS to validate graceful degradation across an autonomous pest-monitoring deployment addressing UN SDG 2.3.",
+      "A dashboard showing the health of an autonomous crop-monitoring system in real time, plus structured testing where we break parts on purpose and record how it copes. Built with a team of six in the CBL course, aimed at helping small-scale farmers catch pest damage early.",
+      "Six of us built something that watches a field for pests, so a farmer finds out before it's too late. Then I spent weeks trying to break it, so it won't."
+    ],
+    hack:[
+      "A prototype built against Booking.com's challenge brief inside a hackathon deadline, carried from concept to a defended demo.",
+      "A weekend prototype for Booking.com's Hack4Her challenge. Two of us built it, and we pitched it together to a non-technical panel, taking first place in the category.",
+      "We had a weekend, an idea, and a room full of judges. My teammate and I did the talking. We won."
+    ]
+  };
+  var transText = document.getElementById("transText");
+  var dial = document.getElementById("dial");
+  var marks = Array.prototype.slice.call(document.querySelectorAll(".scope__marks span"));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".stab"));
+  var subject = "stocked";
+
+  function render(){
+    var lvl = Number(dial.value);
+    marks.forEach(function(m){ m.classList.toggle("is-on", Number(m.dataset.level) === lvl); });
+    dial.setAttribute("aria-valuetext", marks[lvl] ? marks[lvl].textContent : "");
+    var next = lines[subject][lvl];
+    if(next === transText.textContent) return;
+    if(reduce){ transText.textContent = next; return; }
+    transText.classList.add("is-swapping");
+    setTimeout(function(){
+      transText.textContent = next;
+      transText.classList.remove("is-swapping");
+    }, 180);
+  }
+  dial.addEventListener("input", render);
+  tabs.forEach(function(tb){
+    tb.addEventListener("click", function(){
+      subject = tb.dataset.subject;
+      tabs.forEach(function(x){ x.setAttribute("aria-pressed", String(x === tb)); });
+      render();
+    });
+  });
+  render();
+
+  /* ── name settling in on load (one small, quick moment) ── */
+  (function(){
+    var el = document.getElementById("nameLine");
+    if(!el || reduce) return;
+    var text = el.textContent;
+    el.textContent = "";
+    text.split("").forEach(function(ch, i){
+      var s = document.createElement("span");
+      s.className = "ch";
+      s.textContent = ch === " " ? "\u00A0" : ch;
+      s.style.animationDelay = (i * 38) + "ms";
+      el.appendChild(s);
+    });
+  })();
+
+  /* ── project accordion ─────────────────────────────────── */
+  var buttons = Array.prototype.slice.call(document.querySelectorAll(".proj__btn"));
+  buttons.forEach(function(btn){
+    var body = document.getElementById(btn.getAttribute("aria-controls"));
+    btn.addEventListener("click", function(){
+      var open = btn.getAttribute("aria-expanded") === "true";
+      if(open){
+        body.style.height = body.scrollHeight + "px";
+        requestAnimationFrame(function(){ body.style.height = "0px"; });
+        btn.setAttribute("aria-expanded","false");
+      }else{
+        btn.setAttribute("aria-expanded","true");
+        body.style.height = body.scrollHeight + "px";
+        body.addEventListener("transitionend", function once(){
+          body.style.height = "auto";
+          body.removeEventListener("transitionend", once);
+        });
+      }
+    });
+  });
+  function openProject(article){
+    var btn = article.querySelector(".proj__btn");
+    if(btn && btn.getAttribute("aria-expanded") === "false") btn.click();
+  }
+
+  /* ── work filters ──────────────────────────────────────── */
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+  var projects = Array.prototype.slice.call(document.querySelectorAll(".proj"));
+  var emptyNote = document.getElementById("emptyNote");
+  function applyFilter(f){
+    var shown = 0;
+    projects.forEach(function(p){
+      var ok = f === "all" || (p.dataset.tags || "").split(" ").indexOf(f) > -1;
+      p.hidden = !ok;
+      if(ok) shown++;
+    });
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.filter === f)); });
+    emptyNote.hidden = shown > 0;
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){ applyFilter(c.dataset.filter); });
+  });
+
+  /* ── toolkit readout ───────────────────────────────────── */
+  var skillData = {
+    communication:{t:"Communication",p:"The through-line in everything I've done: co-pitching to a non-technical panel, authoring use-case specs a team builds from, and staying clear with customers during peak hours.",e:["Co-pitched the winning Hack4Her concept with my teammate","Wrote the formal use-case specifications for Stocked","Front-line service at Albert Heijn"]},
+    leadership:{t:"Leadership",p:"Less about titles, more about being the person who organises the multi-part effort and makes sure everyone knows what they're building.",e:["Organised and communicated YieldWise's technical workstreams","Coordinated department workflow across shifts at Albert Heijn"]},
+    collaboration:{t:"Collaboration",p:"Two six-person project teams and a two-person hackathon sprint — very different group sizes, both requiring me to fit my work to other people's.",e:["YieldWise, team of 6","Stocked, team of 6","Hack4Her, team of 2"]},
+    adaptability:{t:"Adaptability",p:"New colleagues every shift, new disciplines every honors project, new problem statement every hackathon. I've stopped finding that uncomfortable.",e:["Different colleagues and working styles each shift","Mixed-discipline honors track projects"]},
+    problem:{t:"Problem solving",p:"Structured, not heroic. Define the requirement, make it testable, then find out where it breaks.",e:["Recipe-matching algorithm weighted by expiration data","Structured fault-tolerance testing on YieldWise"]},
+    creative:{t:"Creative thinking",p:"Useful under deadline pressure — coming up with a concept that's both buildable in a weekend and worth a judge's attention.",e:["Winning concept for the Booking.com challenge"]},
+    python:{t:"Python",p:"Proficient. My default for prototyping, data work and anything that needs to exist by tomorrow.",e:["Prototyping at Hack4Her","YieldWise monitoring work"]},
+    java:{t:"Java",p:"Proficient. The language behind Stocked, including the matching logic and the desktop application layer.",e:["Stocked — Java desktop application"]},
+    sql:{t:"SQL",p:"Proficient. Querying and modelling the data behind application features.",e:["Ingredient and expiration data in Stocked","Monitoring data in YieldWise"]},
+    html:{t:"HTML",p:"Proficient. Building semantic, accessible web pages.",e:["Personal website","Hack4Her — SafeTravel application", "YieldWise — live monitoring dashboard"]},
+    css:{t:"CSS",p:"Proficient. Styling and layout for modern web applications.",e:["Personal website","Stocked — frontend development"]},
+    cpp:{t:"C++",p:"Currently self-studying and exploring.",e:["Solo coursework and personal projects"]},
+    assembly:{t:"Assembly",p:"Working knowledge. Mostly valuable for what it taught me about what the layers above are really doing.",e:["TU/e coursework"]},
+    ros2:{t:"ROS2",p:"Working knowledge from robotics and autonomous-system work — nodes, topics, and systems that have to keep running when a part fails.",e:["YieldWise — Autonomous pest-monitoring context"]}
+  };
+  var skillBtns = Array.prototype.slice.call(document.querySelectorAll(".skill"));
+  var readout = document.getElementById("readout");
+  skillBtns.forEach(function(b){
+    b.addEventListener("click", function(){
+      var key = b.dataset.skill;
+      var already = b.getAttribute("aria-pressed") === "true";
+      skillBtns.forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+      if(already){
+        readout.innerHTML = '<h3>Nothing selected yet</h3><p class="soft">Choose a skill on the left. You\'ll get what it means in practice for me, and which projects it shows up in.</p>';
+        return;
+      }
+      b.setAttribute("aria-pressed","true");
+      var d = skillData[key];
+      var html = "<h3>" + d.t + "</h3><p>" + d.p + "</p><ul>";
+      d.e.forEach(function(item){ html += "<li>" + item + "</li>"; });
+      html += "</ul>";
+      readout.innerHTML = html;
+    });
+  });
+
+  /* ── copy email ────────────────────────────────────────── */
+  var copyBtn = document.getElementById("copyMail");
+  copyBtn.addEventListener("click", function(){
+    var mail = "e.robinson@student.tue.nl";
+    function done(ok){
+      copyBtn.textContent = ok ? "Copied" : "Select and copy";
+      setTimeout(function(){ copyBtn.textContent = "Copy"; }, 1800);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(mail).then(function(){ done(true); }, function(){ done(false); });
+    }else{ done(false); }
+  });
+
+  /* ── keyboard: left/right between pages ────────────────── */
+  document.addEventListener("keydown", function(e){
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    var tag = (e.target.tagName || "").toLowerCase();
+    if(tag === "input" || tag === "textarea") return;
+    var i = pages.indexOf(document.documentElement.getAttribute("data-page"));
+    if(e.key === "ArrowRight" && i < pages.length-1) location.hash = pages[i+1];
+    if(e.key === "ArrowLeft" && i > 0) location.hash = pages[i-1];
+  });
+})();
+</script>
+</body>
+</html>
